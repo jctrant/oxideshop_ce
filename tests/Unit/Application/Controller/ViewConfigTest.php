@@ -3,13 +3,14 @@
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\ViewConfig;
 use OxidEsales\EshopCommunity\Application\Model\CountryList;
-
-use \stdClass;
-use \oxRegistry;
-use \oxTestModules;
+use oxTestModules;
+use stdClass;
 
 class ViewConfigTest extends \OxidTestCase
 {
@@ -20,7 +21,7 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testGetHelpPageLink()
     {
-        $sShopUrl = $this->getConfig()->getConfigParam("sShopURL");
+        $sShopUrl = self::getConfig()->getConfigParam("sShopURL");
 
         $oViewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getActiveClassName"));
         $oViewConfig->expects($this->once())->method("getActiveClassName")->will($this->returnValue("start"));
@@ -51,17 +52,17 @@ class ViewConfigTest extends \OxidTestCase
     public function testGetHelpPageLinkActiveContents_EN()
     {
         $oViewConfig = oxNew('oxViewConfig');
-        $this->getConfig()->setConfigParam("sDefaultLang", 1);
-        $this->assertEquals($this->getConfig()->getShopUrl() . 'en/Help-Main/', $oViewConfig->getHelpPageLink());
+        self::getConfig()->setConfigParam("sDefaultLang", 1);
+        $this->assertEquals(self::getConfig()->getShopUrl() . 'en/Help-Main/', $oViewConfig->getHelpPageLink());
     }
 
     public function testGetHomeLinkEng()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . self::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction("oxLang", "getBaseLanguage", "{return 1;}");
 
         $oViewConfig = oxNew('oxviewconfig');
-        $this->assertEquals($this->getConfig()->getShopUrl() . 'en/home/', $oViewConfig->getHomeLink());
+        $this->assertEquals(self::getConfig()->getShopUrl() . 'en/home/', $oViewConfig->getHomeLink());
     }
 
     /**
@@ -71,7 +72,7 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testGetHomeLinkDataProvider()
     {
-        $sShopUrl = $this->getConfig()->getShopUrl();
+        $sShopUrl = self::getConfig()->getShopUrl();
 
         $iLangDE = 0;
         $iLangEN = 1;
@@ -91,9 +92,9 @@ class ViewConfigTest extends \OxidTestCase
     /**
      * Test case for getting eShop home link in different default languages and browser default languages
      *
-     * @param int $iDefaultShopLanguage default shop language
-     * @param int $iDefaultBrowserLanguage default browser language
-     * @param string $sExpectedUrl expected URL
+     * @param int    $iDefaultShopLanguage    default shop language
+     * @param int    $iDefaultBrowserLanguage default browser language
+     * @param string $sExpectedUrl            expected URL
      *
      * @dataProvider testGetHomeLinkDataProvider
      */
@@ -108,7 +109,7 @@ class ViewConfigTest extends \OxidTestCase
 
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Language::class, $oLang);
 
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . self::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
         $this->setLanguage($iDefaultShopLanguage);
         $this->setConfigParam('sDefaultLang', $iDefaultShopLanguage);
@@ -129,9 +130,9 @@ class ViewConfigTest extends \OxidTestCase
             $this->markTestSkipped('This test is for Community/Professional edition only.');
         endif;
 
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . self::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         $oViewConfig = oxNew('oxviewconfig');
-        $this->assertEquals($this->getConfig()->getShopURL(), $oViewConfig->getHomeLink());
+        $this->assertEquals(self::getConfig()->getShopURL(), $oViewConfig->getHomeLink());
     }
 
     /**
@@ -243,7 +244,7 @@ class ViewConfigTest extends \OxidTestCase
         $oVC = $this->getMock(
             'oxviewconfig'
             , array('getConfig', 'getTopActionClassName', 'getActCatId', 'getActTplName', 'getActContentLoadId'
-            , 'getActArticleId', 'getActSearchParam', 'getActSearchTag', 'getActListType', 'getActRecommendationId')
+                    , 'getActArticleId', 'getActSearchParam', 'getActSearchTag', 'getActListType', 'getActRecommendationId')
         );
 
         $oVC->expects($this->any())
@@ -295,7 +296,7 @@ class ViewConfigTest extends \OxidTestCase
         $oVC = $this->getMock(
             'oxviewconfig'
             , array('getConfig', 'getTopActionClassName', 'getActCatId', 'getActTplName', 'getActContentLoadId'
-            , 'getActArticleId', 'getActSearchParam', 'getActSearchTag', 'getActListType', 'getActRecommendationId')
+                    , 'getActArticleId', 'getActSearchParam', 'getActSearchTag', 'getActListType', 'getActRecommendationId')
         );
 
         $oVC->expects($this->any())
@@ -370,7 +371,7 @@ class ViewConfigTest extends \OxidTestCase
 
     public function testGetShowBasketTimeoutWhenFunctionalityIsOnAndTimeLeft()
     {
-        $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
+        self::getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
 
         $oR = $this->getMock('stdclass', array('getTimeLeft'));
         $oR->expects($this->once())->method('getTimeLeft')->will($this->returnValue(5));
@@ -386,7 +387,7 @@ class ViewConfigTest extends \OxidTestCase
 
     public function testGetShowBasketTimeoutWhenFunctionalityIsOnAndTimeExpired()
     {
-        $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
+        self::getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
 
         $oR = $this->getMock('stdclass', array('getTimeLeft'));
         $oR->expects($this->once())->method('getTimeLeft')->will($this->returnValue(0));
@@ -402,7 +403,7 @@ class ViewConfigTest extends \OxidTestCase
 
     public function testGetShowBasketTimeoutWhenFunctionalityIsOff()
     {
-        $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', false);
+        self::getConfig()->setConfigParam('blPsBasketReservationEnabled', false);
 
         $oVC = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getSession'));
         $oVC->expects($this->never())->method('getSession');
@@ -433,7 +434,7 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testIsTplBlocksDebugMode()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = self::getConfig();
 
         $oViewCfg = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
         $oViewCfg->expects($this->any())->method('getConfig')->will($this->returnValue($myConfig));
@@ -454,7 +455,7 @@ class ViewConfigTest extends \OxidTestCase
         $aNrofCatArticlesInGrid = array(1, 2, 3);
         $aNrofCatArticles = array(4, 5, 6);
 
-        $myConfig = $this->getConfig();
+        $myConfig = self::getConfig();
         $myConfig->setConfigParam("aNrofCatArticlesInGrid", $aNrofCatArticlesInGrid);
         $myConfig->setConfigParam("aNrofCatArticles", $aNrofCatArticles);
 
@@ -489,6 +490,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * test return value of getModulePath method
+     *
      * @return void
      */
     public function testGetModulePath()
@@ -516,6 +518,7 @@ class ViewConfigTest extends \OxidTestCase
     /**
      * test that a exception with a specific error message is thrown if the requested file is not found
      * (only in debug mode)
+     *
      * @return void
      */
     public function testGetModulePathExceptionThrownWhenPathNotFoundAndDebugEnabled()
@@ -524,7 +527,7 @@ class ViewConfigTest extends \OxidTestCase
         $config->setConfigParam("iDebug", -1);
         $fakeShopDirectory = $config->getConfigParam('sShopDir');
         $message = "Requested file not found for module test1 (" .
-            $fakeShopDirectory . "modules/test1/out/blocks/non_existing_template.tpl)";
+                   $fakeShopDirectory . "modules/test1/out/blocks/non_existing_template.tpl)";
         $this->setExpectedException('\OxidEsales\EshopCommunity\Core\Exception\FileException', $message);
 
         /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
@@ -561,6 +564,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * test that get module url returns the correct url
+     *
      * @return void
      */
     public function testGetModuleUrl()
@@ -594,8 +598,9 @@ class ViewConfigTest extends \OxidTestCase
         //because of browser security restrictions take effect when loading resources from differt domains
         $adminUrlWithoutAdminPath = $baseUrl;
         $this->assertEquals(
-                            "{$adminUrlWithoutAdminPath}modules/test1/out/blocks/test2.tpl",
-                            $viewConfig->getModuleUrl('test1', 'out/blocks/test2.tpl'));
+            "{$adminUrlWithoutAdminPath}modules/test1/out/blocks/test2.tpl",
+            $viewConfig->getModuleUrl('test1', 'out/blocks/test2.tpl')
+        );
 
         //Test when sShopURL is set and not sSSLShopURL, nor sAdminSSLURL
         $config->setConfigParam('sSSLShopURL', '');
@@ -623,7 +628,7 @@ class ViewConfigTest extends \OxidTestCase
         $config = $this->fakeModuleStructure();
         $fakeShopDirectory = $config->getConfigParam('sShopDir');
         $message = "Requested file not found for module test1 (" . $fakeShopDirectory .
-            "modules/test1/out/blocks/non_existing_template.tpl)";
+                   "modules/test1/out/blocks/non_existing_template.tpl)";
         $this->setExpectedException(\OxidEsales\Eshop\Core\Exception\FileException::class, $message);
 
         /** @var \OxidEsales\Eshop\Core\ViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
@@ -633,23 +638,25 @@ class ViewConfigTest extends \OxidTestCase
         $viewConfig->getModuleUrl('test1', '/out/blocks/non_existing_template.tpl');
     }
 
-    public function testViewThemeParam()
+    /**
+     * @covers \OxidEsales\EshopCommunity\Core\ViewConfig::getViewThemeParam
+     */
+    public function testGetViewThemeParamReadsDirectlyFromConfig()
     {
-        $oVC = oxNew('oxViewConfig');
+        $configStub = $this->getMockBuilder(Config::class)
+                            ->setMethods(['isThemeOption'])
+                            ->getMock();
+        $configStub->method('isThemeOption')->willReturn('true');
 
-        $oV = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isThemeOption'));
-        $oV->expects($this->any())->method('getSession')->will($this->returnValue(false));
+        $viewConfig = oxNew(ViewConfig::class);
+        $viewConfig->setConfig($configStub);
 
-        $this->assertEquals(false, $oVC->getViewThemeParam('aaa'));
+        $viewConfig->getConfig()->setConfigParam('someParameter', 'someValue');
+        $this->assertEquals('someValue', $viewConfig->getViewThemeParam('someParameter'));
 
-        $oV = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isThemeOption'));
-        $oV->expects($this->any())->method('getSession')->will($this->returnValue(true));
-
-        $this->getConfig()->setConfigParam('bl_showListmania', 1);
-        $this->assertEquals(1, $oVC->getViewThemeParam('bl_showListmania'));
-
-        $this->getConfig()->setConfigParam('bl_showListmania', 0);
-        $this->assertEquals(0, $oVC->getViewThemeParam('bl_showListmania'));
+        /** Set and read the value again to discover caching issues */
+        $viewConfig->getConfig()->setConfigParam('someParameter', 'otherValue');
+        $this->assertEquals('otherValue', $viewConfig->getViewThemeParam('someParameter'));
     }
 
     /**
@@ -659,7 +666,7 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testShowSelectLists()
     {
-        $blExp = (bool)$this->getConfig()->getConfigParam('bl_perfLoadSelectLists');
+        $blExp = (bool) self::getConfig()->getConfigParam('bl_perfLoadSelectLists');
         $oVC = oxNew('oxViewConfig');
         $this->assertEquals($blExp, $oVC->showSelectLists());
     }
@@ -671,7 +678,7 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testShowSelectListsInList()
     {
-        $this->getConfig()->setConfigParam('bl_perfLoadSelectListsInAList', true);
+        self::getConfig()->setConfigParam('bl_perfLoadSelectListsInAList', true);
 
         $oVC = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('showSelectLists'));
         $oVC->expects($this->once())->method('showSelectLists')->will($this->returnValue(true));
@@ -697,7 +704,7 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testShowSelectListsInListDifferent()
     {
-        $this->getConfig()->setConfigParam('bl_perfLoadSelectListsInAList', false);
+        self::getConfig()->setConfigParam('bl_perfLoadSelectListsInAList', false);
 
         $oVC = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('showSelectLists'));
         $oVC->expects($this->once())->method('showSelectLists')->will($this->returnValue(true));
@@ -770,10 +777,10 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testIsAltImageServerConfigured_none()
     {
-        $this->getConfig()->setConfigParam('sAltImageUrl', '');
-        $this->getConfig()->setConfigParam('sAltImageDir', '');
-        $this->getConfig()->setConfigParam('sSSLAltImageUrl', '');
-        $this->getConfig()->setConfigParam('sSSLAltImageDir', '');
+        self::getConfig()->setConfigParam('sAltImageUrl', '');
+        self::getConfig()->setConfigParam('sAltImageDir', '');
+        self::getConfig()->setConfigParam('sSSLAltImageUrl', '');
+        self::getConfig()->setConfigParam('sSSLAltImageDir', '');
 
         $oViewConfig = oxNew('oxViewConfig');
 
@@ -785,10 +792,10 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testIsAltImageServerConfigured_httpurl()
     {
-        $this->getConfig()->setConfigParam('sAltImageUrl', 'http://img.oxid-esales.com');
-        $this->getConfig()->setConfigParam('sAltImageDir', '');
-        $this->getConfig()->setConfigParam('sSSLAltImageUrl', '');
-        $this->getConfig()->setConfigParam('sSSLAltImageDir', '');
+        self::getConfig()->setConfigParam('sAltImageUrl', 'http://img.oxid-esales.com');
+        self::getConfig()->setConfigParam('sAltImageDir', '');
+        self::getConfig()->setConfigParam('sSSLAltImageUrl', '');
+        self::getConfig()->setConfigParam('sSSLAltImageDir', '');
 
         $oViewConfig = oxNew('oxViewConfig');
 
@@ -800,10 +807,10 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testIsAltImageServerConfigured_httpdir()
     {
-        $this->getConfig()->setConfigParam('sAltImageUrl', '');
-        $this->getConfig()->setConfigParam('sAltImageDir', 'http://img.oxid-esales.com');
-        $this->getConfig()->setConfigParam('sSSLAltImageUrl', '');
-        $this->getConfig()->setConfigParam('sSSLAltImageDir', '');
+        self::getConfig()->setConfigParam('sAltImageUrl', '');
+        self::getConfig()->setConfigParam('sAltImageDir', 'http://img.oxid-esales.com');
+        self::getConfig()->setConfigParam('sSSLAltImageUrl', '');
+        self::getConfig()->setConfigParam('sSSLAltImageDir', '');
 
         $oViewConfig = oxNew('oxViewConfig');
 
@@ -815,10 +822,10 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testIsAltImageServerConfigured_httpsurl()
     {
-        $this->getConfig()->setConfigParam('sAltImageUrl', '');
-        $this->getConfig()->setConfigParam('sAltImageDir', '');
-        $this->getConfig()->setConfigParam('sSSLAltImageUrl', 'https://img.oxid-esales.com');
-        $this->getConfig()->setConfigParam('sSSLAltImageDir', '');
+        self::getConfig()->setConfigParam('sAltImageUrl', '');
+        self::getConfig()->setConfigParam('sAltImageDir', '');
+        self::getConfig()->setConfigParam('sSSLAltImageUrl', 'https://img.oxid-esales.com');
+        self::getConfig()->setConfigParam('sSSLAltImageDir', '');
 
         $oViewConfig = oxNew('oxViewConfig');
 
@@ -830,10 +837,10 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testIsAltImageServerConfigured_httpsdir()
     {
-        $this->getConfig()->setConfigParam('sAltImageUrl', '');
-        $this->getConfig()->setConfigParam('sAltImageDir', '');
-        $this->getConfig()->setConfigParam('sSSLAltImageUrl', '');
-        $this->getConfig()->setConfigParam('sSSLAltImageDir', 'https://img.oxid-esales.com');
+        self::getConfig()->setConfigParam('sAltImageUrl', '');
+        self::getConfig()->setConfigParam('sAltImageDir', '');
+        self::getConfig()->setConfigParam('sSSLAltImageUrl', '');
+        self::getConfig()->setConfigParam('sSSLAltImageDir', 'https://img.oxid-esales.com');
 
         $oViewConfig = oxNew('oxViewConfig');
 
@@ -1637,7 +1644,7 @@ class ViewConfigTest extends \OxidTestCase
     public function testGetAdminDirWhenNull()
     {
         $sLink = "testingLink";
-        $this->getConfig()->setConfigParam("sAdminDir", $sLink);
+        self::getConfig()->setConfigParam("sAdminDir", $sLink);
 
         $oViewConf = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getViewConfigParam", "setViewConfigParam"));
         $oViewConf->expects($this->once())->method("getViewConfigParam")->with($this->equalTo("sAdminDir"))->will($this->returnValue(null));
@@ -1867,12 +1874,12 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testIsBuyableParent()
     {
-        $this->getConfig()->setConfigParam("blVariantParentBuyable", true);
+        self::getConfig()->setConfigParam("blVariantParentBuyable", true);
 
         $oViewConf = oxNew('oxViewConfig');
         $this->assertTrue($oViewConf->isBuyableParent());
 
-        $this->getConfig()->setConfigParam("blVariantParentBuyable", false);
+        self::getConfig()->setConfigParam("blVariantParentBuyable", false);
         $this->assertFalse($oViewConf->isBuyableParent());
     }
 
@@ -1883,12 +1890,12 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testShowBirthdayFields()
     {
-        $this->getConfig()->setConfigParam("blShowBirthdayFields", true);
+        self::getConfig()->setConfigParam("blShowBirthdayFields", true);
 
         $oViewConf = oxNew('oxViewConfig');
         $this->assertTrue($oViewConf->showBirthdayFields());
 
-        $this->getConfig()->setConfigParam("blShowBirthdayFields", false);
+        self::getConfig()->setConfigParam("blShowBirthdayFields", false);
         $this->assertFalse($oViewConf->showBirthdayFields());
     }
 
@@ -1985,15 +1992,15 @@ class ViewConfigTest extends \OxidTestCase
     public function providerGetNavUrlParamsNavigation()
     {
         return [
-            'empty params' => [
+            'empty params'         => [
                 [],
                 ''
             ],
-            'one param' => [
+            'one param'            => [
                 ["testKey" => "testValue"],
                 "&amp;testKey=testValue"
             ],
-            'two params' => [
+            'two params'           => [
                 ["testKey1" => "testValue1", "testKey2" => "testValue2"],
                 "&amp;testKey1=testValue1&amp;testKey2=testValue2"
             ],
@@ -2043,22 +2050,22 @@ class ViewConfigTest extends \OxidTestCase
     public function providerGetNavFormParams()
     {
         return [
-            'empty params' => [
+            'empty params'         => [
                 [],
                 ''
             ],
-            'one param' => [
+            'one param'            => [
                 ["testKey" => "testVal"],
-                '<input type="hidden" name="testKey" value="testVal" />'.PHP_EOL
+                '<input type="hidden" name="testKey" value="testVal" />' . PHP_EOL
             ],
-            'two params' => [
+            'two params'           => [
                 ["testKey1" => "testVal1", "testKey2" => "testVal2"],
-                '<input type="hidden" name="testKey1" value="testVal1" />'.PHP_EOL
-                .'<input type="hidden" name="testKey2" value="testVal2" />'.PHP_EOL
+                '<input type="hidden" name="testKey1" value="testVal1" />' . PHP_EOL
+                . '<input type="hidden" name="testKey2" value="testVal2" />' . PHP_EOL
             ],
             'two params one empty' => [
                 ["testKey1" => "testVal1", "testKey2" => null],
-                '<input type="hidden" name="testKey1" value="testVal1" />'.PHP_EOL
+                '<input type="hidden" name="testKey1" value="testVal1" />' . PHP_EOL
             ]
         ];
     }
@@ -2071,7 +2078,7 @@ class ViewConfigTest extends \OxidTestCase
     public function testGetStockOnDefaultMessage()
     {
         $sTest = "testValue";
-        $this->getConfig()->setConfigParam("blStockOnDefaultMessage", $sTest);
+        self::getConfig()->setConfigParam("blStockOnDefaultMessage", $sTest);
 
         $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals($sTest, $oViewConf->getStockOnDefaultMessage());
@@ -2085,7 +2092,7 @@ class ViewConfigTest extends \OxidTestCase
     public function testGetStockOffDefaultMessage()
     {
         $sTest = "testValue";
-        $this->getConfig()->setConfigParam("blStockOffDefaultMessage", $sTest);
+        self::getConfig()->setConfigParam("blStockOffDefaultMessage", $sTest);
 
         $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals($sTest, $oViewConf->getStockOffDefaultMessage());
@@ -2170,9 +2177,8 @@ class ViewConfigTest extends \OxidTestCase
         $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals(6, $oViewConf->getPasswordLength());
 
-        $this->getConfig()->setConfigParam("iPasswordLength", 66);
+        self::getConfig()->setConfigParam("iPasswordLength", 66);
         $this->assertEquals(66, $oViewConf->getPasswordLength());
-
     }
 
     /**
@@ -2206,7 +2212,7 @@ class ViewConfigTest extends \OxidTestCase
     public function testSetGetShopLogo_FromConfig()
     {
         $oView = oxNew('oxViewConfig');
-        $this->getConfig()->setConfigParam("sShopLogo", 'logo');
+        self::getConfig()->setConfigParam("sShopLogo", 'logo');
         $this->assertEquals("logo", $oView->getShopLogo());
     }
 
@@ -2240,8 +2246,8 @@ class ViewConfigTest extends \OxidTestCase
      * @dataProvider _dpGetSessionChallengeToken
      *
      * @param boolean $isSessionStarted Was session started.
-     * @param integer $callTimes method How many times getSessionChallengeToken is expected to be called.
-     * @param string $token Security token.
+     * @param integer $callTimes        method How many times getSessionChallengeToken is expected to be called.
+     * @param string  $token            Security token.
      */
     public function testGetSessionChallengeToken($isSessionStarted, $callTimes, $token)
     {
@@ -2274,6 +2280,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewConfig::oePayPalIsModuleActive()
+     *
      * @dataProvider _dpIsModuleActive
      */
     public function testIsModuleActive($aModules, $aModuleVersions, $aDisabledModules, $sModuleId, $blModuleIsActive)
@@ -2319,11 +2326,11 @@ class ViewConfigTest extends \OxidTestCase
     public function testIsModuleActive_VersionCheck($sFrom, $sTo, $blModuleStateExpected)
     {
         $aModules = array(
-            'order' => 'oe/oepaypal/controllers/oepaypalorder',
+            'order'  => 'oe/oepaypal/controllers/oepaypalorder',
             'order2' => 'oe/oepaypal2/controllers/oepaypalorder',
         );
         $aModuleVersions = array(
-            'oepaypal' => '2.0',
+            'oepaypal'  => '2.0',
             'oepaypal2' => '5.0'
         );
         $this->setConfigParam('aModules', $aModules);
@@ -2339,7 +2346,7 @@ class ViewConfigTest extends \OxidTestCase
     public function testGetEdition()
     {
         $oViewConfig = oxNew('oxViewConfig');
-        $this->assertEquals($this->getConfig()->getEdition(), $oViewConfig->getEdition());
+        $this->assertEquals(self::getConfig()->getEdition(), $oViewConfig->getEdition());
     }
 
     /**
@@ -2350,11 +2357,12 @@ class ViewConfigTest extends \OxidTestCase
      */
     private function fakeModuleStructure()
     {
-        $config = $this->getConfig();
+        $config = self::getConfig();
         $config->setConfigParam("iDebug", -1);
 
         $fakeShopDirectory = $this->createModuleStructure();
         $config->setConfigParam("sShopDir", $fakeShopDirectory);
+
         return $config;
     }
 
@@ -2373,7 +2381,7 @@ class ViewConfigTest extends \OxidTestCase
                         'blocks' => array(
                             'test2.tpl' => '*this is module test block*'
                         ),
-                        'lang' => array(
+                        'lang'   => array(
                             'de' => array(
                                 'test_lang.php' => ''
                             )
