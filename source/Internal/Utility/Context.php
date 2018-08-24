@@ -54,6 +54,14 @@ class Context implements ContextInterface
     }
 
     /**
+     * @return string
+     */
+    public function getConfigurationEncryptionKey(): string
+    {
+        return $this->getConfigParameter('sConfigKey');
+    }
+
+    /**
      * @param string $name
      * @return mixed
      */

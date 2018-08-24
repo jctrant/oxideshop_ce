@@ -25,4 +25,9 @@ interface ContextInterface
      * @return array
      */
     public function getRequiredContactFormFields();
+
+    /**
+     * @return string
+     */
+    public function getConfigurationEncryptionKey(): string;
 }
