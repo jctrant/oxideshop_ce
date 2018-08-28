@@ -26,9 +26,9 @@ class ContainerBuilder
     ];
 
     /**
-     * @return Container
+     * @return SymfonyContainerBuilder
      */
-    public function getContainer(): Container
+    public function getContainer(): SymfonyContainerBuilder
     {
         $symfonyContainer = new SymfonyContainerBuilder();
         $this->loadServiceFiles($symfonyContainer);
