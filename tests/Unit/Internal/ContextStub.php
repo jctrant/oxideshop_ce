@@ -67,4 +67,12 @@ class ContextStub implements ContextInterface
     {
         $this->requiredContactFormFields = $requiredContactFormFields;
     }
+
+    /**
+     * @return string
+     */
+    public function getConfigurationEncryptionKey(): string
+    {
+        return '';
+    }
 }
