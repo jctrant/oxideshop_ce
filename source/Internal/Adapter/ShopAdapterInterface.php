@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Adapter;
 
-
 /**
  * @internal
  */
@@ -16,15 +15,17 @@ interface ShopAdapterInterface
 {
     /**
      * @param string $email
+     *
      * @return bool
      */
-    public function isValidEmail($email);
+    public function isValidEmail($email): bool;
 
     /**
      * @param string $string
+     *
      * @return string
      */
-    public function translateString($string);
+    public function translateString($string): string;
 
     /**
      * @param string $moduleId

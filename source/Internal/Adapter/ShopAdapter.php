@@ -24,7 +24,7 @@ class ShopAdapter implements ShopAdapterInterface
      *
      * @return bool
      */
-    public function isValidEmail($email)
+    public function isValidEmail($email): bool
     {
         $emailValidator = oxNew(MailValidator::class);
 
@@ -36,7 +36,7 @@ class ShopAdapter implements ShopAdapterInterface
      *
      * @return string
      */
-    public function translateString($string)
+    public function translateString($string): string
     {
         $lang = Registry::getLang();
 
