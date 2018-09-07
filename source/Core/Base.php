@@ -24,15 +24,6 @@ class Base
     protected static $_oConfig = null;
 
     /**
-     * oxsession instance
-     *
-     * @deprecated since v6.4 (2018-09-07); This attribute will be removed completely at 7.0, use Registry to get session.
-     *
-     * @var \OxidEsales\Eshop\Core\Session
-     */
-    protected static $_oSession = null;
-
-    /**
      * oxrights instance
      *
      * @var oxrights
