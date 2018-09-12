@@ -18,6 +18,7 @@ class WidgetControlTest extends \OxidTestCase
     protected function tearDown()
     {
         parent::tearDown();
+        \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->resetContainer();
 
         modDB::getInstance()->cleanup();
     }
@@ -119,7 +120,6 @@ class WidgetControlTest extends \OxidTestCase
      */
     private function getContainer()
     {
-        \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->resetContainer();
         return \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
     }
 
