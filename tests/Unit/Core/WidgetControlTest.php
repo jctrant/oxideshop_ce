@@ -18,7 +18,6 @@ class WidgetControlTest extends \OxidTestCase
     protected function tearDown()
     {
         parent::tearDown();
-        \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->resetContainer();
 
         modDB::getInstance()->cleanup();
     }
@@ -44,6 +43,7 @@ class WidgetControlTest extends \OxidTestCase
      */
     public function testRunLast()
     {
+        //\OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->resetContainer();
         $view1 = new ContactController();
         $view2 = new LanguageList();
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("hasActiveViewsChain"));
